@@ -2,8 +2,9 @@
 let createError = require('http-errors')
 // 框架主体
 let express = require('express')
-// nodejs path路径模块
+// nodejs path路径模块&fs文件模块
 let path = require('path')
+let fs = require('fs')
 // 解析cookie 经过中间件处理之后，我们可以之前通过res.cookie取到cookie数据
 let cookieParser = require('cookie-parser')
 // 写日志
@@ -16,7 +17,23 @@ const indexRouter = require('./routes/index')
 let app = express()
 
 // 写日志
-app.use(logger('dev'))
+// 根据不同环境进行不同的日志配置
+// 开发环境
+if (process.env.NODE_ENV === 'development') {
+  app.use(logger( 'dev'))
+} else {
+  // 生产环境
+  // 获取日志文件名
+  const logFileName = path.join(__dirname, 'logs', 'access.log')
+  // 创建写数据流
+  const writeStream = fs.createWriteStream(logFileName, {
+    flags: 'a'
+  })
+  app.use(logger('combined', {
+    stream: writeStream
+  }))
+}
+
 // 解析 application/json
 app.use(express.json())
 // 解析 xxx-www-form-urlencoded
