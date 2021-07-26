@@ -11,7 +11,7 @@ let cookieParser = require('cookie-parser')
 let logger = require('morgan')
 
 // 引入路由
-const indexRouter = require('./routes/index')
+const indexRouter = require('./src/routes/index')
 
 // 初始化app实例
 let app = express()
