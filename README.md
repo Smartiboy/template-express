@@ -16,6 +16,7 @@
 
 在原有的基础上，我新增了如下内容：
 
-- mysql
-- xss
+- cross-env：控制环境变量
+- mysql：操作mysql数据库
+- xss：预防xss估计
 
