@@ -1,20 +1,22 @@
-// 处理错误页
-let createError = require('http-errors')
 // 框架主体
-let express = require('express')
+const express = require('express')
 // nodejs path路径模块&fs文件模块
-let path = require('path')
-let fs = require('fs')
+const path = require('path')
+const fs = require('fs')
 // 解析cookie 经过中间件处理之后，我们可以之前通过res.cookie取到cookie数据
-let cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser')
 // 写日志
-let logger = require('morgan')
+const logger = require('morgan')
+// 数据校验
+const joi = require('joi')
+// 错误数据返回
+const {ErrorModel} = require('./src/model/resModel')
 
 // 引入路由
-const indexRouter = require('./src/routes/index')
+const userRouter = require('./src/routes/user')
 
 // 初始化app实例
-let app = express()
+const app = express()
 
 // 写日志
 // 根据不同环境进行不同的日志配置
@@ -42,23 +44,31 @@ app.use(express.urlencoded({extended: false}))
 app.use(cookieParser())
 
 // 注册路由
-app.use('/api', indexRouter)
+app.use('/auth', userRouter)
 
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404))
+// 捕获404并返回错误数据
+app.use((req, res, next) => {
+  res.json(new ErrorModel(null, null, 404))
 })
 
-// error handler
-app.use(function (err, req, res) {
-  // set locals, only providing error in development
+// 捕获错误信息
+app.use((err,req, res, next) => {
+  // 判断是否是校验错误
+  if (err instanceof joi.ValidationError) {
+    res.json(new ErrorModel(null, err.message, err.status))
+  }
+})
+
+// 处理其他程序错误
+app.use((err, req, res) => {
+  // 设置局部变量，仅提供开发中的错误
   res.locals.message = err.message
   // 如果是开发环境则抛错
   res.locals.error = req.app.get('env') === 'development' ? err : {}
-
-  // render the error page
+  // 设置错误状态
   res.status(err.status || 500)
-  res.send(`Err Code：${err.status}`)
+  // 返回错误数据
+  res.json(new ErrorModel(null, err.message, err.status))
 })
 
 module.exports = app
