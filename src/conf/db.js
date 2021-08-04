@@ -6,7 +6,7 @@
 * */
 
 // 环境参数，可以根据不同环境设置不同的参数配置
-const env = process.env.NODE_ENVSS
+const env = process.env.NODE_ENV
 
 let MYSQL_CONF
 
@@ -14,10 +14,10 @@ let MYSQL_CONF
 if (env === 'development') {
   MYSQL_CONF = {
     host: 'localhost',
-    user: 'xxxx',
-    password: 'xxxxx',
+    user: 'root',
+    password: 'xxxxxxx',
     port: '3306',
-    database: 'xxxxx'
+    database: 'xxxx'
   }
 }
 
