@@ -22,7 +22,7 @@ function exec(sql) {
 
 // 防止xss和sql注入
 function prevent(value) {
-  xss(mysql.escape(value))
+  return xss(mysql.escape(value))
 }
 
 // 不进行断开连接，exec函数属于单例模式
