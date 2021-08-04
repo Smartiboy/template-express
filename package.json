@@ -1,6 +1,6 @@
 {
-  "name": "blog-express",
-  "version": "0.4.0",
+  "name": "template-express",
+  "version": "0.5.0",
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon ./bin/www",
@@ -8,10 +8,12 @@
     "test": "cross-env NODE_ENV=production nodemon ./bin/www"
   },
   "dependencies": {
+    "@escook/express-joi": "^1.1.1",
+    "bcryptjs": "^2.4.3",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "^4.17.1",
-    "http-errors": "~1.6.3",
+    "joi": "^17.4.2",
     "morgan": "~1.9.1",
     "mysql": "^2.18.1",
     "xss": "^1.0.9"
