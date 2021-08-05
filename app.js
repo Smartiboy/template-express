@@ -10,7 +10,7 @@ const logger = require('morgan')
 // 数据校验
 const joi = require('joi')
 // 错误数据返回
-const {ErrorModel} = require('./src/model/resModel')
+const {ErrorModel, SuccessModel} = require('./src/model/resModel')
 
 // 引入路由
 const userRouter = require('./src/routes/user')
@@ -55,7 +55,7 @@ app.use((req, res, next) => {
 app.use((err,req, res, next) => {
   // 判断是否是校验错误
   if (err instanceof joi.ValidationError) {
-    res.json(new ErrorModel(null, err.message, err.status))
+    res.json(new SuccessModel(null, err.message, req.method))
   }
 })
 
