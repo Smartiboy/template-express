@@ -8,9 +8,14 @@ const register = async (req, res) => {
   // 获取数据
   const {username, password, email} = req.body
   // 查询用户名是否已被使用
-  const result = await exec(`select username from users where username='${username}'`)
-  if (result.length) {
+  const usernameRes = await exec(`select username from users where username='${username}'`)
+  if (usernameRes.length) {
     return res.json(new SuccessModel(null, '用户名已存在', req.method, 0))
+  }
+  // 查询邮箱是否已被使用
+  const emailRes = await exec(`select username from users where email='${email}'`)
+  if (emailRes.length) {
+    return res.json(new SuccessModel(null, '邮箱已被注册', req.method, 0))
   }
   // 密码加密
   let genPassword = bcrypt.hashSync(password, 10)
