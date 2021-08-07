@@ -2,7 +2,7 @@
 * 数据返回模型
 * 作者：何俊
 * 创建时间：2021/08/03
-* 更新时间：创建时间：2021/08/03
+* 更新时间：创建时间：2021/08/07
 * */
 
 /*
@@ -31,6 +31,7 @@ class BaseModel {
 * data {String|Object|Array}：要返回的数据
 * message {String}：要返回的提示文字
 * method {String}：根据不同的请求方法，返回对应的状态码
+* @statusCode：业务状态码（0：业务异常；1：业务正常；）默认值为1
 * @return
 * message {String}：提示文字
 * data {String|Object|Array}：数据
@@ -38,9 +39,13 @@ class BaseModel {
 * code {Number}：状态码
 * */
 class SuccessModel extends BaseModel {
-  constructor(data, message, method) {
+  constructor(data, message, method, statusCode=1) {
     super(data, message)
-    this.status = 'success'
+    if (statusCode) {
+      this.status = 'success'
+    } else {
+      this.status = 'error'
+    }
     if (!message) {
       this.message = '请求成功'
     }
