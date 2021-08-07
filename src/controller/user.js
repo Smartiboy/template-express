@@ -19,7 +19,7 @@ const register = async (req, res) => {
   let nowTime = dayjs(Date.now()).format('YYYY-MM-DD HH:mm:ss')
   try {
     const data = await exec(insertSql, [username, genPassword, 2, nowTime, nowTime, email])
-    if (data.affectedRows.length) {
+    if (data.affectedRows === 1) {
       return res.json(new SuccessModel(null, '注册成功', req.method))
     }
   } catch (e) {
